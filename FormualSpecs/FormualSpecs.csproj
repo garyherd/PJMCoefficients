@@ -48,7 +48,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Coefficient.cs" />
+    <Compile Include="RequestedCoefficient.cs" />
+    <Compile Include="IntervalModel.cs" />
+    <Compile Include="IntervalModelDTO.cs" />
     <Compile Include="PPL.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

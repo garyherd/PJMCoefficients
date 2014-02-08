@@ -35,8 +35,8 @@ namespace FormualSpecs
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PPL", "Update the TelesProfiles database with load profile coefficients.\r\nThe inputs wil" +
-                    "l an arbitrary data range, and weather forecast ID.\r\nThe output will be a set of" +
-                    " coefficients for the given date range,\r\nwritten to specified table(s)", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "l an arbitrary date range, and a weather forecast ID.\r\nThe output will be a set " +
+                    "of coefficients for the given date range,\r\nwritten to specified table(s)", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -74,43 +74,57 @@ namespace FormualSpecs
             this.ScenarioTearDown();
         }
         
-        [Xunit.FactAttribute()]
+        [Xunit.Extensions.TheoryAttribute()]
         [Xunit.TraitAttribute("FeatureTitle", "PPL")]
         [Xunit.TraitAttribute("Description", "Calculate coefficient for single interval")]
-        public virtual void CalculateCoefficientForSingleInterval()
+        [Xunit.Extensions.InlineDataAttribute("50", "1.561", new string[0])]
+        [Xunit.Extensions.InlineDataAttribute("60", "1.5247", new string[0])]
+        [Xunit.Extensions.InlineDataAttribute("70", "1.5421", new string[0])]
+        [Xunit.Extensions.InlineDataAttribute("80", "1.6623", new string[0])]
+        public virtual void CalculateCoefficientForSingleInterval(string temperature, string coefficient, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate coefficient for single interval", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate coefficient for single interval", exampleTags);
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "HIGH_1",
-                        "HIGH_2",
-                        "HIGH_3",
-                        "HIGH_4",
-                        "COEFF_1",
-                        "COEFF_2",
-                        "COEFF_3",
-                        "COEFF_4",
-                        "CONSTANT"});
+                        "Field",
+                        "Value"});
             table1.AddRow(new string[] {
-                        "50.4741",
-                        "64.5280",
-                        "77.3043",
-                        "99999",
-                        "-0.0204",
-                        "-0.0028",
-                        "0.0055",
-                        "0.0297",
+                        "HIGH_1",
+                        "50.4741"});
+            table1.AddRow(new string[] {
+                        "HIGH_2",
+                        "64.5280"});
+            table1.AddRow(new string[] {
+                        "HIGH_3",
+                        "77.3043"});
+            table1.AddRow(new string[] {
+                        "HIGH_4",
+                        "99999"});
+            table1.AddRow(new string[] {
+                        "COEFF_1",
+                        "-0.0204"});
+            table1.AddRow(new string[] {
+                        "COEFF_2",
+                        "-0.0028"});
+            table1.AddRow(new string[] {
+                        "COEFF_3",
+                        "0.0055"});
+            table1.AddRow(new string[] {
+                        "COEFF_4",
+                        "0.0297"});
+            table1.AddRow(new string[] {
+                        "REGRESSION_CONSTANT",
                         "2.5810"});
 #line 9
  testRunner.Given("the following coefficients and constants:", ((string)(null)), table1, "Given ");
-#line 13
- testRunner.And("the temperature is 50 degF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 21
+ testRunner.And(string.Format("the temperature is {0} degF", temperature), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
  testRunner.When("the coefficient request is made", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 15
- testRunner.Then("the result should be 1.5625", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+ testRunner.Then(string.Format("the result should be {0}", coefficient), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

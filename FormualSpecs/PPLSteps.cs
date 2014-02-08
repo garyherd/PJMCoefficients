@@ -1,5 +1,6 @@
 ﻿using System;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 using Xunit;
 
 namespace FormualSpecs
@@ -7,32 +8,35 @@ namespace FormualSpecs
     [Binding]
     public class PPLSteps
     {
-        private Coefficient _coefficient;
-
         [Given]
         public void Given_the_following_coefficients_and_constants(Table table)
         {
-            string[] header = {"HIGH_1", "HIGH_2",  "HIGH_3", "HIGH_4", "COEFF_1", "COEFF_2", "COEFF_3", "COEFF_4", "CONSTANT"};
-            string[] row1 = { "50.4741", "64.5280", "77.3043", "99999", "-0.0204", "-0.0028", "0.0055", "0.0297", "2.5810" };
-            var t = new Table(header);
-            t.AddRow(row1);
+            IntervalModelDTO modelDto = table.CreateInstance<IntervalModelDTO>();
+            ScenarioContext.Current.Set<IntervalModelDTO>(modelDto, "modelDto");
         }
 
         [Given]
-        public void Given_the_temperature_is_TEMP_degF(double temp)
+        public void Given_the_temperature_is_TEMP_degF(decimal temp)
         {
-            _coefficient = new Coefficient(temp);
+            ScenarioContext.Current["temp"] = temp;  
         }
 
         [When]
         public void When_the_coefficient_request_is_made()
         {
+            var modelDto = ScenarioContext.Current.Get<IntervalModelDTO>("modelDto");
+            var temp = (decimal)ScenarioContext.Current["temp"];
+
+            IntervalModel model = new IntervalModel(modelDto);
+            RequestedCoefficient coefficient = new RequestedCoefficient(model, temp);
+            ScenarioContext.Current["coefficient"] = coefficient;
         }
 
         [Then]
-        public void Then_the_result_should_be_FACTOR(double factor)
+        public void Then_the_result_should_be_P0(Decimal p0)
         {
-            Assert.Equal(_coefficient.LoadProfileFactor, factor, 4);
+            var coefficient = ScenarioContext.Current.Get<RequestedCoefficient>("coefficient");
+            Assert.Equal(p0, coefficient.ProfileValue,4);
         }
     }
 }
